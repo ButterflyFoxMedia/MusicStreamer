@@ -3,10 +3,16 @@ using Microsoft.Maui.LifecycleEvents;
 
 namespace MusicStreamer
 {
+
     public static class MauiProgram
     {
+
         public static MauiApp CreateMauiApp()
         {
+
+            string CacheDirectory = FileSystem.Current.CacheDirectory;
+            string AppDirectory = FileSystem.Current.AppDataDirectory;
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -16,7 +22,7 @@ namespace MusicStreamer
                     events.AddAndroid(android => android
                         .OnActivityResult((activity, requestCode, resultCode, data) => LogEvent(nameof(AndroidLifecycle.OnActivityResult), requestCode.ToString()))
                         .OnStart((activity) => LogEvent(nameof(AndroidLifecycle.OnStart)))
-                        .OnCreate((activity, bundle) => LogEvent(nameof(AndroidLifecycle.OnCreate)))
+                        .OnCreate((activity, bundle) => CheckSavedCredentials(nameof(AndroidLifecycle.OnCreate)))
                         .OnBackPressed((activity) => LogEvent(nameof(AndroidLifecycle.OnBackPressed)) && false)
                         .OnStop((activity) => LogEvent(nameof(AndroidLifecycle.OnStop)))
                         );
@@ -27,11 +33,36 @@ namespace MusicStreamer
                         .OnResignActivation((app) => LogEvent(nameof(iOSLifecycle.OnResignActivation)))
                         .DidEnterBackground((app) => LogEvent(nameof(iOSLifecycle.DidEnterBackground)))
                         .WillTerminate((app) => LogEvent(nameof(iOSLifecycle.WillTerminate)))
+                        .FinishedLaunching((app, bundle) => CheckSavedCredentials(nameof(iOSLifecycle.FinishedLaunching)))
+                        
                     );
 #endif
                     static bool LogEvent(string eventName, string type = "Not Provided")
                     {
-                        //TODO: log to logfile
+                        
+                        try
+                        {
+                            string LogFilePath = Path.Combine(FileSystem.Current.AppDataDirectory, "Record.log");
+
+                            using (StreamWriter writer = File.AppendText(LogFilePath))
+                            {
+                                writer.WriteLineAsync($"{DateTime.Now.ToString()}:TYPE:{type}");
+                                writer.WriteLineAsync($"{DateTime.Now.ToString()}:EVENT:{eventName}");
+                            }
+
+                        }
+                        catch(Exception ex)
+                        {
+                            //TODO: Handle Exception Not Written To File
+                        }
+
+                        return true;
+                    }
+
+                    static bool CheckSavedCredentials(string eventName, string type = "Not Provided")
+                    {
+                        LogEvent(eventName, type);
+                        //TODO: Check for Credential File, if exists - load token, if not exists, prompt for login to obtain token
                         return true;
                     }
                 }
@@ -41,6 +72,7 @@ namespace MusicStreamer
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Pelagiad.ttf", "Pelagiad");
                 });
 
 #if DEBUG
