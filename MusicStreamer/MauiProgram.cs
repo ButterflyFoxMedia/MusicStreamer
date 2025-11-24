@@ -64,7 +64,7 @@ namespace MusicStreamer
                     static bool CheckSavedCredentials(string eventName, string type = "Not Provided")
                     {
 
-                        //TODO: Cleanup for removal
+                        //TODO: Cleanup - Create Global Task with Modal LoginPage
                         LogEvent(eventName, type);
 
                         string credPath = Path.Combine(FileSystem.Current.CacheDirectory, ".env");
