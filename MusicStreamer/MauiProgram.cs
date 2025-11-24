@@ -2,6 +2,7 @@
 using Microsoft.Maui.LifecycleEvents;
 using DotNetEnv;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace MusicStreamer
 {
@@ -24,7 +25,7 @@ namespace MusicStreamer
                     events.AddAndroid(android => android
                         .OnActivityResult((activity, requestCode, resultCode, data) => LogEvent(nameof(AndroidLifecycle.OnActivityResult), requestCode.ToString()))
                         .OnStart((activity) => LogEvent(nameof(AndroidLifecycle.OnStart)))
-                        .OnCreate((activity, bundle) => CheckSavedCredentials(nameof(AndroidLifecycle.OnCreate)))
+                        .OnCreate((activity, bundle) => LogEvent(nameof(AndroidLifecycle.OnCreate)))
                         .OnBackPressed((activity) => LogEvent(nameof(AndroidLifecycle.OnBackPressed)) && false)
                         .OnStop((activity) => LogEvent(nameof(AndroidLifecycle.OnStop)))
                         );
@@ -35,7 +36,7 @@ namespace MusicStreamer
                         .OnResignActivation((app) => LogEvent(nameof(iOSLifecycle.OnResignActivation)))
                         .DidEnterBackground((app) => LogEvent(nameof(iOSLifecycle.DidEnterBackground)))
                         .WillTerminate((app) => LogEvent(nameof(iOSLifecycle.WillTerminate)))
-                        .FinishedLaunching((app, bundle) => CheckSavedCredentials(nameof(iOSLifecycle.FinishedLaunching)))
+                        .FinishedLaunching((app, bundle) => LogEvent(nameof(iOSLifecycle.FinishedLaunching)))
                         
                     );
 #endif
@@ -60,25 +61,6 @@ namespace MusicStreamer
 
                         return true;
                     }
-
-                    static bool CheckSavedCredentials(string eventName, string type = "Not Provided")
-                    {
-
-                        //TODO: Cleanup - Create Global Task with Modal LoginPage
-                        LogEvent(eventName, type);
-
-                        string credPath = Path.Combine(FileSystem.Current.CacheDirectory, ".env");
-                        if (File.Exists(credPath))
-                        {
-
-                        }
-                        else
-                        {
-
-                        }
-                            //TODO: Check for Credential File, if exists - load token, if not exists, prompt for login to obtain token
-                            return true;
-                    }
                 }
                     )
                 
@@ -96,49 +78,22 @@ namespace MusicStreamer
             return builder.Build();
         }
 
-        public class GlobalDataInfo()
+        public static class CredentialManager
         {
-            string _username = string.Empty;
-            string _password = string.Empty;
-            string _usertoken = string.Empty;
+            public static async Task<bool> CheckCredentials()
+            {
+                string? token = await SecureStorage.Default.GetAsync("api_token"); //Mark string as nullable
 
-            public string Username
-            {
-                get
-                { 
-                    return _username; 
-                }
-                private set
+                //if token is null, go through login
+                while (token == null)
                 {
-                    _username = value;
-                }
-            }
-            public string Password
-            {
-                get
-                {
-                    return _password;
-                    //Return hashed password and only unhash before sending to Emby
-                }
-                private set
-                {
-                    _password = value;
-                    //Always hash before sending password
-                }
-            }
+                    //Launch LoginPage as Modal
 
-            public string Usertoken
-            {
-                get 
-                {
-                    return _usertoken;
-                    //Return hashed usertoken and only unhash before sending to Emby
-                }
-                private set
-                {
-                    _usertoken = value;
-                    //Always hash before sending usertoken
-                }
+                    //Set token before testing iteration condition
+                    token = await SecureStorage.Default.GetAsync("api_token"); //Mark string as nullable
+                } //if token is not null, then escape loop
+
+                return true;
             }
         }
     }
