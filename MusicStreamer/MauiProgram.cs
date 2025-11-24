@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
+using DotNetEnv;
+using System.IO;
 
 namespace MusicStreamer
 {
@@ -61,9 +63,21 @@ namespace MusicStreamer
 
                     static bool CheckSavedCredentials(string eventName, string type = "Not Provided")
                     {
+
+                        //TODO: Cleanup for removal
                         LogEvent(eventName, type);
-                        //TODO: Check for Credential File, if exists - load token, if not exists, prompt for login to obtain token
-                        return true;
+
+                        string credPath = Path.Combine(FileSystem.Current.CacheDirectory, ".env");
+                        if (File.Exists(credPath))
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                            //TODO: Check for Credential File, if exists - load token, if not exists, prompt for login to obtain token
+                            return true;
                     }
                 }
                     )
