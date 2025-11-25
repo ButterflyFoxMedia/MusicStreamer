@@ -80,17 +80,18 @@ namespace MusicStreamer
 
         public static class CredentialManager
         {
-            public static async Task<bool> CheckCredentials()
+            public static async Task<bool>  CheckCredentials()
             {
                 string? token = await SecureStorage.Default.GetAsync("api_token"); //Mark string as nullable
 
                 //if token is null, go through login
                 while (token == null)
                 {
-                    //Launch LoginPage as Modal
+                    //Launch LoginPage as Modal (Modal Call is handled in LoginPage.XAML)
+                    await Shell.Current.GoToAsync("LoginPage");
 
                     //Set token before testing iteration condition
-                    token = await SecureStorage.Default.GetAsync("api_token"); //Mark string as nullable
+                    token = await SecureStorage.Default.GetAsync("api_token");
                 } //if token is not null, then escape loop
 
                 return true;

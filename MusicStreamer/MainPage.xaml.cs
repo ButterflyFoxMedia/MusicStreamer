@@ -1,16 +1,17 @@
 ﻿using MusicStreamer.Pages;
 using System.Threading.Tasks;
+using static MusicStreamer.MauiProgram.CredentialManager;
 
 namespace MusicStreamer
 {
     public partial class MainPage : ContentPage
     {
+        
         int count = 0;
 
         public MainPage()
         {
             InitializeComponent();
-            CheckSavedCredentials();
         }
 
         private void OnCounterClicked(object? sender, EventArgs e)
@@ -25,20 +26,15 @@ namespace MusicStreamer
             SemanticScreenReader.Announce(CounterBtn.Text);
         }
 
-        static async Task<bool> CheckSavedCredentials()
+        protected override void OnAppearing()
         {
-            string credPath = Path.Combine(FileSystem.Current.CacheDirectory, ".env");
-            if (File.Exists(credPath))
-            {
+            base.OnAppearing();
 
-            }
-            else
+            Dispatcher.DispatchAsync(async () =>
             {
-                //Launch LoginPage as Modal
-                await Shell.Current.GoToAsync("//LoginPage");
-            }
-            //TODO: Check for Credential File, if exists - load token, if not exists, prompt for login to obtain token
-            return true;
+                _ = await CheckCredentials();
+            });
         }
+        
     }
 }
