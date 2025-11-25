@@ -4,6 +4,10 @@
              x:Class="MusicStreamer.Pages.LoginPage"
              Title="LoginPage"
              Shell.PresentationMode="ModalAnimated">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" />
+        <BackButtonBehavior IsVisible="False" />
+    </Shell.BackButtonBehavior>
     <VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"
