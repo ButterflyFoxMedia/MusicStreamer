@@ -8,10 +8,18 @@
     Shell.FlyoutBehavior="Flyout">
 
     <FlyoutItem Title="Home">
-        <ShellContent
-            Title="Home"
-            ContentTemplate="{DataTemplate local:MainPage}"
-            Route="MainPage" />
+        <Tab Title="MainPage"
+         Route="MainPage">
+            <ShellContent Title="Servers"
+                ContentTemplate="{DataTemplate local:Servers}"
+                Route="Servers" />
+            <ShellContent Title="Media"
+                ContentTemplate="{DataTemplate local:Media}"
+                Route="Media" />
+            <ShellContent Title="Local"
+                ContentTemplate="{DataTemplate local:Local}"
+                Route="Local" />
+        </Tab>
     </FlyoutItem>
 
     <FlyoutItem Title="Account">

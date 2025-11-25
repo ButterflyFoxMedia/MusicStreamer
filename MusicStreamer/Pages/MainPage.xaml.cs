@@ -34,6 +34,7 @@ namespace MusicStreamer
             {
                 _ = await CheckCredentials();
             });
+            //TODO: If Server securestorage exists, load media page, else load Servers page
         }
         
     }
