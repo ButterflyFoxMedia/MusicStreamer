@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MusicStreamer.Pages.LoginPage"
              Title="LoginPage"
+             Shell.FlyoutBehavior="Disabled"
              Shell.PresentationMode="ModalAnimated">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsEnabled="False" />
