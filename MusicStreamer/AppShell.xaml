@@ -44,7 +44,7 @@
         <ShellContent
             Title="Emby"
             ContentTemplate="{DataTemplate local:LoginPage}"
-            Route="LoginPage" />
+            Route="EmbyLogin" />
     </FlyoutItem>
 
     <FlyoutItem Title="Plex"
@@ -52,7 +52,7 @@
         <ShellContent
         Title="Plex"
         ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="LoginPage" />
+        Route="PlexLogin" />
     </FlyoutItem>
 
 </Shell>

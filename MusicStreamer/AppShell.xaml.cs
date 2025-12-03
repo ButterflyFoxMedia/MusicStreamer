@@ -11,7 +11,8 @@ namespace MusicStreamer
             //Register Routes
 
             //Login Page
-            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute("EmbyLogin", typeof(LoginPage));
+            Routing.RegisterRoute("PlexLogin", typeof(LoginPage));
         }
     }
 }
