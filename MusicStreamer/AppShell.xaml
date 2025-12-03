@@ -7,7 +7,8 @@
     Title="MusicStreamer"
     Shell.FlyoutBehavior="Flyout">
 
-    <FlyoutItem Title="Home">
+    <FlyoutItem Title="Home"
+                FlyoutItemIsVisible="True">
         <Tab Title="MainPage"
          Route="MainPage">
             <ShellContent Title="Servers"
@@ -22,18 +23,36 @@
         </Tab>
     </FlyoutItem>
 
-    <FlyoutItem Title="Account">
+    <FlyoutItem Title="Account"
+                FlyoutItemIsVisible="True">
         <ShellContent
             Title="Account"
             ContentTemplate="{DataTemplate local:Account}"
             Route="Account" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Settings">
+    <FlyoutItem Title="Settings"
+                FlyoutItemIsVisible="True">
         <ShellContent
         Title="Settings"
         ContentTemplate="{DataTemplate local:Settings}"
         Route="Settings" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Emby"
+                FlyoutItemIsVisible="False">
+        <ShellContent
+            Title="Emby"
+            ContentTemplate="{DataTemplate local:LoginPage}"
+            Route="LoginPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Plex"
+            FlyoutItemIsVisible="False">
+        <ShellContent
+        Title="Plex"
+        ContentTemplate="{DataTemplate local:LoginPage}"
+        Route="LoginPage" />
     </FlyoutItem>
 
 </Shell>
